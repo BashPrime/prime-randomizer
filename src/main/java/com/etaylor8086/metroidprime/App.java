@@ -1,7 +1,6 @@
 package com.etaylor8086.metroidprime;
 
 import com.beust.jcommander.JCommander;
-import com.beust.jcommander.ParameterException;
 import com.etaylor8086.metroidprime.randomizer.Randomizer;
 
 /**
@@ -20,14 +19,19 @@ public class App
         	jc.parse(args);
         	
         	// Print usage
-        	if (args.length < 2 || cla.help) {
+        	if (cla.help) {
         		jc.usage();
         	}
         	
         	// Run randomizer using provided seed value
         	else if (cla.getSeed() != null) {
         		Randomizer randomizer = new Randomizer();
-        		randomizer.randomize(cla.getSeed());
+        		randomizer.runRandomizer(cla.getSeed());
+        	}
+        	
+        	else {
+        		Randomizer randomizer = new Randomizer();
+        		randomizer.runRandomizer();
         	}
     	}
     	catch (Exception e) {
