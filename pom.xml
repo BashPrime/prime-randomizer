@@ -4,9 +4,25 @@
   <groupId>com.etaylor8086.metroidprime</groupId>
   <artifactId>randomizer</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0</version>
   <name>randomizer</name>
   <url>http://maven.apache.org</url>
+  <build>
+  	<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.etaylor8086.metroidprime.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
