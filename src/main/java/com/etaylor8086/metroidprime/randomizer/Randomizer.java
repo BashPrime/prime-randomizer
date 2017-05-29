@@ -8,7 +8,10 @@ import org.json.simple.JSONArray;
 import com.etaylor8086.metroidprime.utilities.JsonSimpleReader;
 
 public class Randomizer {
-	final String PRIME_1_ITEM_LOCATIONS_JSON_FILE = "/prime1ItemLocations.json";
+	private final String PRIME_1_ITEM_LOCATIONS_JSON_FILE = "/items/prime1ItemLocations.json";
+	private final String PRIME_1_ITEMS_JSON_FILE = "/items/prime1Items.json";
+	private PrimeItem[] primeItems;
+	private PrimeItemLocation[] primeItemLocations;
 	
 	
 	/**
@@ -25,8 +28,8 @@ public class Randomizer {
 	public void runRandomizer(int seed) {
 		System.out.println("Using seed: " + seed);
 		
-		InputStream primeItemsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
+		InputStream primeItemLocationsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
 		
-		JSONArray itemsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemsStream);
+		JSONArray itemLocationsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemLocationsStream);
 	}
 }
