@@ -1,4 +1,4 @@
-package com.etaylor8086;
+package com.etaylor8086.metroidprime;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
