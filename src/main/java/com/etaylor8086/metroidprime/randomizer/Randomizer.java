@@ -1,6 +1,5 @@
 package com.etaylor8086.metroidprime.randomizer;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.Random;
 
@@ -9,7 +8,7 @@ import org.json.simple.JSONArray;
 import com.etaylor8086.metroidprime.utilities.JsonSimpleReader;
 
 public class Randomizer {
-	final String PRIME_1_ITEMS_JSON_FILE = "/prime1ItemLocations.json";
+	final String PRIME_1_ITEM_LOCATIONS_JSON_FILE = "/prime1ItemLocations.json";
 	
 	
 	/**
@@ -26,7 +25,7 @@ public class Randomizer {
 	public void runRandomizer(int seed) {
 		System.out.println("Using seed: " + seed);
 		
-		InputStream primeItemsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEMS_JSON_FILE);
+		InputStream primeItemsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
 		
 		JSONArray itemsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemsStream);
 	}
