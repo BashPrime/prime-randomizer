@@ -39,13 +39,8 @@ public class Randomizer {
 	 * The primary randomizer method, wraps around other submethods to build the original item, location, and randomized location arrays.
 	 */
 	public void runRandomizer() {
-		System.out.println("Using seed: " + this.seed);
 		primeItems = this.buildPrimeItemsArray();
-		primeItemLocations = this.buildPrimeItemLocationsArray();
-		
-		System.out.println("Items array created with size " + primeItems.size());
-		System.out.println("Item locations array created with size " + primeItemLocations.size());
-		
+		primeItemLocations = this.buildPrimeItemLocationsArray();	
 		this.buildRandomizedLocationsArray();
 	}
 	
@@ -55,8 +50,17 @@ public class Randomizer {
 	 */
 	public List<PrimeItem> buildPrimeItemsArray() {
 		List<PrimeItem> items = new ArrayList<PrimeItem>();
-		InputStream primeItemsStream = Randomizer.class.getResourceAsStream(this.PRIME_1_ITEMS_JSON_FILE);
-		JSONArray itemsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemsStream);
+		JSONArray itemsArrayJson = null;
+		try {
+			InputStream primeItemsStream = Randomizer.class.getResourceAsStream(this.PRIME_1_ITEMS_JSON_FILE);
+			itemsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemsStream);
+			primeItemsStream.close();
+		}
+		catch (Exception e) {
+			System.err.println("Error building prime items list: " + e);
+			System.exit(1);
+		}
+		
 		
 		for (int i = 0; i < itemsArrayJson.size(); i++) {
 			items.add(new PrimeItem((JSONObject) itemsArrayJson.get(i)));
@@ -71,8 +75,17 @@ public class Randomizer {
 	 */
 	public List<PrimeItemLocation> buildPrimeItemLocationsArray() {
 		List<PrimeItemLocation> itemLocations = new ArrayList<PrimeItemLocation>();
-		InputStream primeItemLocationsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
-		JSONArray itemLocationsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemLocationsStream);
+		JSONArray itemLocationsArrayJson = null;
+		
+		try {
+			InputStream primeItemLocationsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
+			itemLocationsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemLocationsStream);
+			primeItemLocationsStream.close();
+		}
+		catch(Exception e) {
+			System.err.println("Error building prime item locations list: " + e);
+			System.exit(1);
+		}
 		
 		for (int i = 0; i < itemLocationsArrayJson.size(); i++) {
 			itemLocations.add(new PrimeItemLocation((JSONObject) itemLocationsArrayJson.get(i)));
@@ -107,6 +120,7 @@ public class Randomizer {
 		
 		// Output randomized items
 		System.out.println("--- Randomized item locations ---");
+		System.out.println("--- Seed: " + this.seed + " ---");
 		for (PrimeItemLocation location : randomizedItemLocations) {
 			System.out.println(location.description + ": " + location.randomizedItemName);
 		}

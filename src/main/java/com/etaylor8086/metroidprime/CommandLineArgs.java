@@ -13,7 +13,10 @@ public class CommandLineArgs {
 	private Integer seed = null;
 	
 	@Parameter(names = {"--help", "-h"}, description = "Prints this message", help = true)
-	public boolean help;
+	private boolean help;
+	
+	@Parameter(names = {"--version", "-v"}, description = "Prints the randomizer version")
+	private boolean version;
 	
 	/**
 	 * Getter for CLI seed number
@@ -29,5 +32,13 @@ public class CommandLineArgs {
 	 */
 	public boolean getHelp() {
 		return this.help;
+	}
+	
+	/**
+	 * Getter for CLI version argument
+	 * @return True if the version argument is entered by the user
+	 */
+	public boolean getVersion() {
+		return this.version;
 	}
 }

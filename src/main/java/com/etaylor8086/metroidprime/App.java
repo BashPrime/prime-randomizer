@@ -1,5 +1,8 @@
 package com.etaylor8086.metroidprime;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 import com.beust.jcommander.JCommander;
 import com.etaylor8086.metroidprime.randomizer.Randomizer;
 
@@ -17,6 +20,7 @@ public class App
     {
     	CommandLineArgs cla = new CommandLineArgs();
     	JCommander jc = new JCommander(cla);
+    	Properties properties = loadProperties();
     	
     	try {
         	jc.setProgramName("randomizer");
@@ -27,8 +31,13 @@ public class App
     	}
     	
     	// Print usage
-    	if (cla.help) {
+    	if (cla.getHelp()) {
     		jc.usage();
+    	}
+    	
+    	// Print version
+    	else if (cla.getVersion()) {
+    		System.out.println("randomizer version " + properties.getProperty("randomizer.version"));
     	}
     	
     	// Run randomizer using provided seed value
@@ -60,6 +69,25 @@ public class App
     private static void usage() {
     	JCommander jc = new JCommander(new CommandLineArgs());
     	jc.usage();
+    }
+    
+    /**
+     * Loads application properties such as version information.
+     * @return Loaded application properties
+     */
+    private static Properties loadProperties() {
+    	Properties properties = new Properties();
+    	try {
+    		InputStream in = App.class.getResourceAsStream("/randomizer.properties");
+    		properties.load(in);
+    		in.close();
+    	}
+    	catch (Exception e) {
+    		System.err.println("Error loading application properties: " + e);
+    		System.exit(1);
+    	}
+    	
+    	return properties;
     }
     
     
