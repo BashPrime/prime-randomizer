@@ -12,30 +12,31 @@ public class App
 {
     public static void main( String[] args )
     {
+    	CommandLineArgs cla = new CommandLineArgs();
+    	JCommander jc = new JCommander(cla);
+    	
     	try {
-    		CommandLineArgs cla = new CommandLineArgs();
-        	JCommander jc = new JCommander(cla);
         	jc.setProgramName("randomizer");
         	jc.parse(args);
-        	
-        	// Print usage
-        	if (cla.help) {
-        		jc.usage();
-        	}
-        	
-        	// Run randomizer using provided seed value
-        	else if (cla.getSeed() != null) {
-        		Randomizer randomizer = new Randomizer();
-        		randomizer.runRandomizer(cla.getSeed());
-        	}
-        	
-        	else {
-        		Randomizer randomizer = new Randomizer();
-        		randomizer.runRandomizer();
-        	}
     	}
     	catch (Exception e) {
     		exitWithError(e.getMessage());
+    	}
+    	
+    	// Print usage
+    	if (cla.help) {
+    		jc.usage();
+    	}
+    	
+    	// Run randomizer using provided seed value
+    	else if (cla.getSeed() != null) {
+    		Randomizer randomizer = new Randomizer();
+    		randomizer.runRandomizer(cla.getSeed());
+    	}
+    	
+    	else {
+    		Randomizer randomizer = new Randomizer();
+    		randomizer.runRandomizer();
     	}
     }
     

@@ -29,24 +29,35 @@ public class Randomizer {
 	 * @param seed
 	 */
 	public void runRandomizer(int seed) {
-		primeItems = new ArrayList<PrimeItem>();
-		primeItemLocations = new ArrayList<PrimeItemLocation>();
 		System.out.println("Using seed: " + seed);
+		primeItems = this.buildPrimeItemsArray();
+		primeItemLocations = this.buildPrimeItemLocationsArray();
 		
-		InputStream primeItemsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEMS_JSON_FILE);
-		InputStream primeItemLocationsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
-		
+		System.out.println("Items array created with size " + primeItems.size());
+		System.out.println("Item locations array created with size " + primeItemLocations.size());
+	}
+	
+	public List<PrimeItem> buildPrimeItemsArray() {
+		List<PrimeItem> items = new ArrayList<PrimeItem>();
+		InputStream primeItemsStream = Randomizer.class.getResourceAsStream(this.PRIME_1_ITEMS_JSON_FILE);
 		JSONArray itemsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemsStream);
+		
+		for (int i = 0; i < itemsArrayJson.size(); i++) {
+			items.add(new PrimeItem((JSONObject) itemsArrayJson.get(i)));
+		}
+		
+		return items;
+	}
+	
+	public List<PrimeItemLocation> buildPrimeItemLocationsArray() {
+		List<PrimeItemLocation> itemLocations = new ArrayList<PrimeItemLocation>();
+		InputStream primeItemLocationsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
 		JSONArray itemLocationsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemLocationsStream);
 		
-		// Add item locations to primeItemLocations array
 		for (int i = 0; i < itemLocationsArrayJson.size(); i++) {
-			primeItemLocations.add(new PrimeItemLocation((JSONObject) itemLocationsArrayJson.get(i)));
+			itemLocations.add(new PrimeItemLocation((JSONObject) itemLocationsArrayJson.get(i)));
 		}
 		
-		// Output item locations array
-		for (PrimeItemLocation primeItemLocation: primeItemLocations) {
-			System.out.println(primeItemLocation.toString());
-		}
+		return itemLocations;
 	}
 }
