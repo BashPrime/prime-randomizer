@@ -15,10 +15,18 @@ public class CommandLineArgs {
 	@Parameter(names = {"--help", "-h"}, description = "Prints this message", help = true)
 	public boolean help;
 	
+	/**
+	 * Getter for CLI seed number
+	 * @return The seed value, or null if one wasn't defined in the CLI argument
+	 */
 	public Integer getSeed() {
 		return this.seed;
 	}
 	
+	/**
+	 * Getter for CLI help argument
+	 * @return True if the help argument is entered by the user
+	 */
 	public boolean getHelp() {
 		return this.help;
 	}

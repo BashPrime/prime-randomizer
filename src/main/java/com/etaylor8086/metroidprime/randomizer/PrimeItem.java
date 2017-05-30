@@ -1,23 +1,37 @@
 package com.etaylor8086.metroidprime.randomizer;
 
-import java.math.BigInteger;
-
 import org.json.simple.JSONObject;
 
 import com.etaylor8086.metroidprime.utilities.NumberUtilities;
 
 public class PrimeItem {
-	private String name;
-	private Long count;
-	private Integer item;
-	private Long capacity;
-	private Long amount;
-	private Integer model;
-	private Integer animSet;
-	private Long animCharacter;
-	private Object rotation;
-	private Integer xrayModel;
-	private Integer xraySkin;
+	public String name;
+	public Long count;
+	public Long remaining;
+	public Integer item;
+	public Long capacity;
+	public Long amount;
+	public Integer model;
+	public Integer animSet;
+	public Long animCharacter;
+	public Object rotation;
+	public Integer xrayModel;
+	public Integer xraySkin;
+	
+	public PrimeItem() {
+		this.name = null;
+		this.count = null;
+		this.remaining = null;
+		this.item = null;
+		this.capacity = null;
+		this.amount = null;
+		this.model = null;
+		this.animSet = null;
+		this.animCharacter = null;
+		this.rotation = null;
+		this.xrayModel = null;
+		this.xraySkin = null;
+	}
 	
 	public PrimeItem(JSONObject primeItemObj) {
 		NumberUtilities numberUtils = new NumberUtilities();
@@ -25,6 +39,7 @@ public class PrimeItem {
 		// name, count, item, model, animSet are all used, rest are optional
 		this.name = (String) primeItemObj.get("name");
 		this.count = (Long) primeItemObj.get("count");
+		this.remaining = this.count;
 		this.item = numberUtils.parseHexString((String) primeItemObj.get("item"));
 		this.model = numberUtils.parseHexString((String) primeItemObj.get("model"));
 		this.animSet = numberUtils.parseHexString((String) primeItemObj.get("animSet"));

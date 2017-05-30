@@ -9,6 +9,10 @@ import org.json.simple.parser.JSONParser;
 public class JsonSimpleReader {
 	JSONParser parser;
 	
+	/**
+	 * Read JSON file as input stream from project resources and return JSON array it contains.
+	 * @param inputstream from resource JSON file
+	 */
 	public JSONArray readJsonArrayFromFile(InputStream inputStream) {
 		parser = new JSONParser();
 		JSONArray jsonArray = null;
