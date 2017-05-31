@@ -1,22 +1,22 @@
 package com.etaylor8086.metroidprime.randomizer;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import com.etaylor8086.metroidprime.utilities.JsonSimpleReader;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Randomizer {
 	private final String PRIME_1_ITEM_LOCATIONS_JSON_FILE = "/items/prime1ItemLocations.json";
 	private final String PRIME_1_ITEMS_JSON_FILE = "/items/prime1Items.json";
 	Integer seed;
 	Random rng;
-	private List<PrimeItem> primeItems;
-	private List<PrimeItemLocation> primeItemLocations;
+	private PrimeItem[] primeItems;
+	private PrimeItemLocation[] primeItemLocations;
+//	private List<PrimeItem> primeItems;
+//	private List<PrimeItemLocation> primeItemLocations;
 	
 	/**
 	 * Default constructor. Loads randomizer class with a psuedorandom seed
@@ -39,56 +39,51 @@ public class Randomizer {
 	 * The primary randomizer method, wraps around other submethods to build the original item, location, and randomized location arrays.
 	 */
 	public void runRandomizer() {
-		primeItems = this.buildPrimeItemsArray();
-		primeItemLocations = this.buildPrimeItemLocationsArray();	
-		this.buildRandomizedLocationsArray();
+		System.out.println("Using seed: " + this.seed);
+		this.primeItems = this.buildPrimeItemsArray();
+		this.primeItemLocations = this.buildPrimeItemLocationsArray();
+		System.out.print("Randomizing locations...");
+		RandomItemLocation[] randomItemLocations = this.buildRandomizedLocationsArray();
+		System.out.println(" randomized!");
+		this.writeSpoilerLog(randomItemLocations);
 	}
 	
 	/**
-	 * Builds the Prime items ArrayList from the given JSON file.
-	 * @return ArrayList of Prime items and relevant data (model, animations, etc.)
+	 * Builds the Prime items array from the given JSON file.
+	 * @return Array of Prime items and relevant data (model, animations, etc.)
 	 */
-	public List<PrimeItem> buildPrimeItemsArray() {
-		List<PrimeItem> items = new ArrayList<PrimeItem>();
-		JSONArray itemsArrayJson = null;
+	public PrimeItem[] buildPrimeItemsArray() {
+		PrimeItem[] items = null;
 		try {
-			InputStream primeItemsStream = Randomizer.class.getResourceAsStream(this.PRIME_1_ITEMS_JSON_FILE);
-			itemsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemsStream);
-			primeItemsStream.close();
+			InputStream in = Randomizer.class.getResourceAsStream(this.PRIME_1_ITEMS_JSON_FILE);
+			ObjectMapper mapper = new ObjectMapper();
+			items = mapper.readValue(in, PrimeItem[].class);
+			in.close();
 		}
 		catch (Exception e) {
 			System.err.println("Error building prime items list: " + e);
 			System.exit(1);
 		}
-		
-		
-		for (int i = 0; i < itemsArrayJson.size(); i++) {
-			items.add(new PrimeItem((JSONObject) itemsArrayJson.get(i)));
-		}
-		
+
 		return items;
 	}
 	
 	/**
-	 * Builds the original Prime item locations ArrayList from the given JSON file.
-	 * @return ArrayList of the original item locations
+	 * Builds the original Prime item locations array from the given JSON file.
+	 * @return Array of the original item locations
 	 */
-	public List<PrimeItemLocation> buildPrimeItemLocationsArray() {
-		List<PrimeItemLocation> itemLocations = new ArrayList<PrimeItemLocation>();
-		JSONArray itemLocationsArrayJson = null;
+	public PrimeItemLocation[] buildPrimeItemLocationsArray() {
+		PrimeItemLocation[] itemLocations = null;
 		
 		try {
-			InputStream primeItemLocationsStream = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
-			itemLocationsArrayJson = new JsonSimpleReader().readJsonArrayFromFile(primeItemLocationsStream);
-			primeItemLocationsStream.close();
+			InputStream in = Randomizer.class.getResourceAsStream(PRIME_1_ITEM_LOCATIONS_JSON_FILE);
+			ObjectMapper mapper = new ObjectMapper();
+			itemLocations = mapper.readValue(in, PrimeItemLocation[].class);
+			in.close();
 		}
 		catch(Exception e) {
 			System.err.println("Error building prime item locations list: " + e);
 			System.exit(1);
-		}
-		
-		for (int i = 0; i < itemLocationsArrayJson.size(); i++) {
-			itemLocations.add(new PrimeItemLocation((JSONObject) itemLocationsArrayJson.get(i)));
 		}
 		
 		return itemLocations;
@@ -98,31 +93,49 @@ public class Randomizer {
 	 * Builds the randomized item locations array using the Prime items array as an item pool.
 	 * @return Array of Prime item locations
 	 */
-	public void buildRandomizedLocationsArray() {
+	public RandomItemLocation[] buildRandomizedLocationsArray() {
 		// Initialize random array
-		boolean[] isRandomized = new boolean[this.primeItemLocations.size()];
-		PrimeItemLocation[] randomizedItemLocations = new PrimeItemLocation[this.primeItemLocations.size()];
+		boolean[] isRandomized = new boolean[this.primeItemLocations.length];
+		RandomItemLocation[] randomizedItemLocations = new RandomItemLocation[this.primeItemLocations.length];
 		
 		// Iterate through Prime items. Use as a pool to fill the locations until the array is filled with pseudorandom data
 		for (PrimeItem item : this.primeItems) {
-			while (item.remaining > 0) {
-				Integer randomIndex = this.getRandomIndex(this.primeItemLocations.size() - 1);
+			int remaining = item.count;
+			while (remaining > 0) {
+				Integer randomIndex = this.getRandomIndex(this.primeItemLocations.length - 1);
 				// Location index not randomized, fill it with random item and mark randomized
 				if (!isRandomized[randomIndex]) {
-					randomizedItemLocations[randomIndex] = this.primeItemLocations.get(randomIndex);
-					randomizedItemLocations[randomIndex].randomizedItemId = item.item;
-					randomizedItemLocations[randomIndex].randomizedItemName = item.name;
+					randomizedItemLocations[randomIndex] = new RandomItemLocation(item, this.primeItemLocations[randomIndex]);
 					isRandomized[randomIndex] = true;
-					item.remaining -= 1;
+					remaining -= 1;
 				}
 			}
 		}
 		
-		// Output randomized items
-		System.out.println("--- Randomized item locations ---");
-		System.out.println("--- Seed: " + this.seed + " ---");
-		for (PrimeItemLocation location : randomizedItemLocations) {
-			System.out.println(location.description + ": " + location.randomizedItemName);
+		return randomizedItemLocations;
+	}
+	
+	public void writeSpoilerLog(RandomItemLocation[] locations) {
+		try {
+			String outDirName = "out";
+			String fileName = "Prime_" + this.seed + ".json";
+			File outDir = new File(outDirName);
+			
+			// Create out directory if it doesn't exist
+			if (outDir.mkdir())
+				System.out.println("Created out" + File.separator + " directory for spoiler logs");
+			
+			// Write spoiler log
+			BufferedWriter out = new BufferedWriter(new FileWriter(outDirName + File.separator + fileName));
+			RandomizedGame game = new RandomizedGame(this.seed, locations);
+			ObjectMapper mapper = new ObjectMapper();
+			String jsonResult = mapper.writeValueAsString(game);
+			out.write(jsonResult);
+			out.close();
+			System.out.println("Successfully wrote spoiler log to " + outDirName + File.separator + fileName);
+		}
+		catch (Exception e) {
+			System.out.println(e);
 		}
 	}
 	

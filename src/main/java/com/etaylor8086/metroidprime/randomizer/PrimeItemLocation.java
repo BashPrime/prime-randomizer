@@ -1,38 +1,14 @@
 package com.etaylor8086.metroidprime.randomizer;
 
-import org.json.simple.JSONObject;
-
-import com.etaylor8086.metroidprime.utilities.NumberUtilities;
-
 public class PrimeItemLocation {
 	public String area;
 	public String description;
 	public String room;
-	public Integer id;
-	public Integer originalItem;
-	public Integer randomizedItemId;
-	public String randomizedItemName;
+	public String id;
+	public String originalItem;
 	
-	public PrimeItemLocation() {
-		this.area = null;
-		this.description = null;
-		this.room = null;
-		this.id = null;
-		this.originalItem = null;
-		this.randomizedItemId = null;
-		this.randomizedItemName = null;
-		
-	}
-	
-	public PrimeItemLocation(JSONObject primeItemLocationObj) {
-		NumberUtilities numberUtils = new NumberUtilities();
-		
-		this.area = (String) primeItemLocationObj.get("area");
-		this.description = (String) primeItemLocationObj.get("description");
-		this.room = (String) primeItemLocationObj.get("room");
-		this.id = numberUtils.parseHexString((String) primeItemLocationObj.get("id"));
-		this.originalItem = numberUtils.parseHexString((String) primeItemLocationObj.get("originalItem"));
-		this.randomizedItemId = null;
-		this.randomizedItemName = null;
+	public String toString() {
+		return "PrimeItemLocation [area=" + this.area + ", description=" + this.description
+			+ ", room=" + this.room + ", id=" + this.id + ", originalItem=" + this.originalItem + "]";
 	}
 }
