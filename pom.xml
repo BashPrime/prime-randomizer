@@ -32,7 +32,7 @@
 				<goal>copy-dependencies</goal>
 			</goals>
 			<configuration>
-			  <outputDirectory>${project.build.directory}/Randomizer/lib/</outputDirectory>
+			  <outputDirectory>${project.build.directory}/randomizer/lib/</outputDirectory>
 			  <overWriteReleases>false</overWriteReleases>
 			  <overWriteSnapshots>false</overWriteSnapshots>
 			  <overWriteIfNewer>true</overWriteIfNewer>
@@ -52,10 +52,10 @@
               <classpathPrefix>lib/</classpathPrefix>
             </manifest>
             <manifestEntries>
-				<Class-Path>.</Class-Path>
-			</manifestEntries>
+                <Class-Path>.</Class-Path>
+            </manifestEntries>
           </archive>
-          <finalName>Randomizer/${project.artifactId}</finalName>
+          <finalName>randomizer/${project.artifactId}</finalName>
         </configuration>
       </plugin>
     </plugins>
@@ -87,11 +87,6 @@
     	<groupId>com.beust</groupId>
     	<artifactId>jcommander</artifactId>
     	<version>1.69</version>
-    </dependency>
-    <dependency>
-    	<groupId>com.googlecode.json-simple</groupId>
-    	<artifactId>json-simple</artifactId>
-    	<version>1.1.1</version>
     </dependency>
   </dependencies>
 </project>
