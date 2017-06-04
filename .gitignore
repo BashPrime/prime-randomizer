@@ -25,3 +25,7 @@ local.properties
 .recommenders
 .classpath
 .project
+
+# Application files
+out/
+**/*.iso
