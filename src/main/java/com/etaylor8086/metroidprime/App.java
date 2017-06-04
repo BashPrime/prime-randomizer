@@ -56,7 +56,11 @@ public class App
     		randomizer.runRandomizer();
     	}
     	
-    	Prime1DiscImageReader dir = new Prime1DiscImageReader("mp1.iso");
+    	if (cla.getInputFile() != null) {
+    		System.out.println("Reading input file " + cla.getInputFile());
+    		Prime1DiscImageReader dir = new Prime1DiscImageReader(cla.getInputFile());
+    	}
+    	
     }
     
     /**

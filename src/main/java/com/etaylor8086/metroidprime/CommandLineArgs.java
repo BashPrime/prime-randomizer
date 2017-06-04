@@ -18,6 +18,9 @@ public class CommandLineArgs {
 	@Parameter(names = {"--version", "-v"}, description = "Prints the randomizer version")
 	private boolean version;
 	
+	@Parameter(names = {"--input-file", "-i"}, description = "Input .iso file")
+	private String inputFile;
+	
 	/**
 	 * Getter for CLI seed number
 	 * @return The seed value, or null if one wasn't defined in the CLI argument
@@ -40,5 +43,13 @@ public class CommandLineArgs {
 	 */
 	public boolean getVersion() {
 		return this.version;
+	}
+	
+	/**
+	 * Getter for CLI inputFile argument
+	 * @return String value, or null if one wasn't defined
+	 */
+	public String getInputFile() {
+		return this.inputFile;
 	}
 }
