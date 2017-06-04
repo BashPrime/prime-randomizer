@@ -4,7 +4,11 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.beust.jcommander.JCommander;
+import com.etaylor8086.metroidprime.patcher.Prime1DiscImageReader;
 import com.etaylor8086.metroidprime.randomizer.Randomizer;
+import java.io.File;
+import java.io.FileReader;
+import java.io.RandomAccessFile;
 
 /**
  * Randomizer entry point
@@ -51,6 +55,8 @@ public class App
     		Randomizer randomizer = new Randomizer();
     		randomizer.runRandomizer();
     	}
+    	
+    	Prime1DiscImageReader dir = new Prime1DiscImageReader("mp1.iso");
     }
     
     /**
