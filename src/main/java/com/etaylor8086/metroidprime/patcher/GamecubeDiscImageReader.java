@@ -6,4 +6,5 @@ public class GamecubeDiscImageReader {
 	protected final int FST_OFFSET_OFFSET = 0x0424;
 	protected final int FST_SIZE_OFFSET = 0x0428;
 	protected final int FST_MAXSIZE_OFFSET = 0x042C;
+	protected final int FILE_ENTRY_SIZE = 0x0C;
 }
