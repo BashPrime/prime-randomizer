@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.beust.jcommander.JCommander;
-import com.etaylor8086.metroidprime.patcher.Prime1DiscImageReader;
+import com.etaylor8086.metroidprime.patcher.Prime1Reader;
 import com.etaylor8086.metroidprime.randomizer.Randomizer;
 import java.io.File;
 import java.io.FileReader;
@@ -58,7 +58,7 @@ public class App
     	
     	if (cla.getInputFile() != null) {
     		System.out.println("Reading input file " + cla.getInputFile());
-    		Prime1DiscImageReader dir = new Prime1DiscImageReader(cla.getInputFile());
+    		Prime1Reader p1r = new Prime1Reader(cla.getInputFile());
     	}
     	
     }
