@@ -49,7 +49,7 @@ public class PakFile {
 			this.pakNamedResources[i].nameLength = ByteBuffer.wrap(this.readGameDiscData(offset + 8, 4)).getInt();
 			this.pakNamedResources[i].name = new String(this.readGameDiscData(offset + 12, this.pakNamedResources[i].nameLength));
 			offset += 0xC + this.pakNamedResources[i].nameLength;
-			System.out.println("---- " + this.fileName + ", fileType=" + this.pakNamedResources[i].fileType + ", fileID=" + this.pakNamedResources[i].fileID + ", NameLength=" + this.pakNamedResources[i].nameLength + ", Name=" + this.pakNamedResources[i].name);
+//			System.out.println("---- " + this.fileName + ", fileType=" + this.pakNamedResources[i].fileType + ", fileID=" + this.pakNamedResources[i].fileID + ", NameLength=" + this.pakNamedResources[i].nameLength + ", Name=" + this.pakNamedResources[i].name);
 		}
 		
 		return offset;
@@ -66,8 +66,8 @@ public class PakFile {
 			this.pakResources[i].fileID = ByteBuffer.wrap(this.readGameDiscData(offset + 8, 4)).getInt();
 			this.pakResources[i].size = ByteBuffer.wrap(this.readGameDiscData(offset + 12, 4)).getInt();
 			this.pakResources[i].offset = ByteBuffer.wrap(this.readGameDiscData(offset + 16, 4)).getInt();
-			offset += 4;
-			System.out.println("---- " + this.fileName + ", compressed=" + this.pakResources[i].compressed + ", fileType=" + this.pakResources[i].fourCC + ", fileID=" + this.pakResources[i].fileID + ", size=" + this.pakResources[i].size + ", offset=" + this.pakResources[i].offset);
+			offset += 0x14;
+//			System.out.println("---- " + this.fileName + ", compressed=" + this.pakResources[i].compressed + ", fileType=" + this.pakResources[i].fourCC + ", fileID=" + this.pakResources[i].fileID + ", size=" + this.pakResources[i].size + ", offset=" + this.pakResources[i].offset);
 		}
 		
 		
