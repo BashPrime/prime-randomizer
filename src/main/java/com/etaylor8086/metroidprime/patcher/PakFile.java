@@ -9,7 +9,7 @@ public class PakFile {
 	private int offset;
 	private int namedResourceCount;
 	private int resourceCount;
-	private PakNamedResource[] namedResources;
+	private PakNamedResource[] pakNamedResources;
 	private PakResource[] pakResources;
 	
 	public PakFile(String discPath, String fileName, int offset) {
@@ -22,28 +22,55 @@ public class PakFile {
 	}
 	
 	public void readFile() {
+		// We don't care about the 8 byte header, skip it and go straight to 9th byte
 		int currentOffset = 0x8;
 		this.namedResourceCount = ByteBuffer.wrap(this.readGameDiscData(currentOffset, 4)).getInt();
-		System.out.println("Resource count in " + this.fileName + ": " + this.namedResourceCount);
-		this.readNamedResources(currentOffset += 4);
+		System.out.println("Named Resource count in " + this.fileName + ": " + this.namedResourceCount);
+		currentOffset = this.readNamedResources(currentOffset += 4);
+		this.resourceCount = ByteBuffer.wrap(this.readGameDiscData(currentOffset, 4)).getInt();
+		System.out.println("Resource count in " + this.fileName + ": " + this.resourceCount);
+		this.readResources(currentOffset += 4);
 	}
 	
+	/**
+	 * Reads in bytes to populate named resources array property.
+	 * 
+	 * @param startOffset
+	 * @return Offset value (beginning of resourcesTable) after reading all named resources.
+	 */
 	public int readNamedResources(int startOffset) {
-		int bytesRead = 0;
 		int offset = startOffset;
-		this.namedResources = new PakNamedResource[this.namedResourceCount];
+		this.pakNamedResources = new PakNamedResource[this.namedResourceCount];
 		
 		for (int i = 0; i < this.namedResourceCount; i++) {
-			this.namedResources[i] = new PakNamedResource();
-			this.namedResources[i].fileType = new String(this.readGameDiscData(offset, 4));
-			this.namedResources[i].fileID = ByteBuffer.wrap(this.readGameDiscData(offset += 4, 4)).getInt();
-			this.namedResources[i].nameLength = ByteBuffer.wrap(this.readGameDiscData(offset += 4, 4)).getInt();
-			this.namedResources[i].name = new String(this.readGameDiscData(offset += 4, this.namedResources[i].nameLength));
-			offset += this.namedResources[i].nameLength;
-			System.out.println("---- " + this.fileName + ", fileType=" + this.namedResources[i].fileType + ", fileID=" + this.namedResources[i].fileID + ", NameLength=" + this.namedResources[i].nameLength + ", Name=" + this.namedResources[i].name);
+			this.pakNamedResources[i] = new PakNamedResource();
+			this.pakNamedResources[i].fileType = new String(this.readGameDiscData(offset, 4));
+			this.pakNamedResources[i].fileID = ByteBuffer.wrap(this.readGameDiscData(offset + 4, 4)).getInt();
+			this.pakNamedResources[i].nameLength = ByteBuffer.wrap(this.readGameDiscData(offset + 8, 4)).getInt();
+			this.pakNamedResources[i].name = new String(this.readGameDiscData(offset + 12, this.pakNamedResources[i].nameLength));
+			offset += 0xC + this.pakNamedResources[i].nameLength;
+			System.out.println("---- " + this.fileName + ", fileType=" + this.pakNamedResources[i].fileType + ", fileID=" + this.pakNamedResources[i].fileID + ", NameLength=" + this.pakNamedResources[i].nameLength + ", Name=" + this.pakNamedResources[i].name);
 		}
 		
-		return bytesRead;
+		return offset;
+	}
+	
+	public void readResources(int startOffset) {
+		int offset = startOffset;
+		this.pakResources = new PakResource[this.resourceCount];
+		
+		for (int i = 0; i < this.resourceCount; i++) {
+			this.pakResources[i] = new PakResource();
+			this.pakResources[i].compressed = ByteBuffer.wrap(this.readGameDiscData(offset, 4)).getInt() == 1 ? true : false;
+			this.pakResources[i].fourCC = new String(this.readGameDiscData(offset + 4, 4));
+			this.pakResources[i].fileID = ByteBuffer.wrap(this.readGameDiscData(offset + 8, 4)).getInt();
+			this.pakResources[i].size = ByteBuffer.wrap(this.readGameDiscData(offset + 12, 4)).getInt();
+			this.pakResources[i].offset = ByteBuffer.wrap(this.readGameDiscData(offset + 16, 4)).getInt();
+			offset += 4;
+			System.out.println("---- " + this.fileName + ", compressed=" + this.pakResources[i].compressed + ", fileType=" + this.pakResources[i].fourCC + ", fileID=" + this.pakResources[i].fileID + ", size=" + this.pakResources[i].size + ", offset=" + this.pakResources[i].offset);
+		}
+		
+		
 	}
 	
 	
