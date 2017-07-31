@@ -1,6 +1,5 @@
 package com.etaylor8086.metroidprime.patcher;
 
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,34 +21,7 @@ public class Prime1Reader extends GamecubeDiscImageReader {
 		this.prime1Files = this.readFileSystemTable(this.gameHeader);
 	}
 	
-	public byte[] readGameDiscData(int offset, int length) {
-		byte[] discData = new byte[length];
-		
-		try (RandomAccessFile raf = new RandomAccessFile(this.fileName, "r")) {
-			raf.seek(offset);
-            raf.read(discData, 0, length);
-        }
-        catch (Exception e) {
-            System.err.println("Failed to read data from " + this.fileName + ": " + e);
-            return null;
-        }
-		
-		return discData;
-	}
 	
-	public Integer convertOddByteArrToInt(byte[] byteArr) {
-		if (byteArr.length <= 3) {
-			byte[] newByteArr = new byte[4];
-			
-			for (int i = 0; i < byteArr.length; i++) {
-				newByteArr[newByteArr.length - 1 - i] = byteArr[byteArr.length - 1 - i];
-			}
-			
-			return ByteBuffer.wrap(newByteArr).getInt();
-		}
-		
-		return null;
-	}
 	
 	public Prime1FileHeader readDiscHeader() {
 		Prime1FileHeader gameHeader = new Prime1FileHeader();
@@ -72,7 +44,7 @@ public class Prime1Reader extends GamecubeDiscImageReader {
 			prime1Files[i-1].isDirectory = fileFlag == 1 ? true : false;
 			
 			byte[] fileNameOffsetBytes = FileUtilities.readGameDiscData(this.gameHeader.fstOffset + 1 + (i * 12),  3);
-			prime1Files[i-1].fileName = new String(this.readFileName(stringTableOffset + this.convertOddByteArrToInt(fileNameOffsetBytes)));
+			prime1Files[i-1].fileName = new String(FileUtilities.readFileName(stringTableOffset + FileUtilities.convertOddByteArrToInt(fileNameOffsetBytes)));
 			
 			prime1Files[i-1].fileOffset = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.gameHeader.fstOffset + 4 + (i * 12), 4)).getInt();
 			prime1Files[i-1].multiIntVal = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.gameHeader.fstOffset + 8 + (i * 12), 4)).getInt();
@@ -86,29 +58,5 @@ public class Prime1Reader extends GamecubeDiscImageReader {
 		return prime1Files;
 	}
 	
-	public byte[] readFileName(int offset) {
-		List<Byte> byteList = new ArrayList<Byte>();
-		
-		try (RandomAccessFile raf = new RandomAccessFile(this.fileName, "r")) {
-			raf.seek(offset);
-			while (true) {
-				byte newByte = raf.readByte();
-				if (newByte != 0)
-					byteList.add(newByte);
-				else
-					break;
-			}
-			byte[] bytes = new byte[byteList.size()];
-			
-			for (int i = 0; i < bytes.length; i++) {
-				bytes[i] = byteList.get(i);
-			}
-			
-			return bytes;
-        }
-        catch (Exception e) {
-            System.err.println("Failed to read data from " + this.fileName + ": " + e);
-            return null;
-        }
-	}
+	
 }

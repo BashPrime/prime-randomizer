@@ -74,21 +74,4 @@ public class PakFile {
 		
 		
 	}
-	
-	
-	
-	public byte[] readGameDiscData(int offset, int length) {
-		byte[] discData = new byte[length];
-		
-		try (RandomAccessFile raf = new RandomAccessFile(this.fileName, "r")) {
-			raf.seek(offset);
-            raf.read(discData, 0, length);
-        }
-        catch (Exception e) {
-            System.err.println("Failed to read data from " + this.fileName + ": " + e);
-            return null;
-        }
-		
-		return discData;
-	}
 }
