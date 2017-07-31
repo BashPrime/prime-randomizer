@@ -5,14 +5,19 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.etaylor8086.metroidprime.util.FileUtilities;
+
 public class Prime1Reader extends GamecubeDiscImageReader {
 	String fileName;
 	Prime1FileHeader gameHeader;
 	Prime1File[] prime1Files;
+	List<PakFile> worldPaks;
 	
 	public Prime1Reader(String fileName) {
 		this.gameHeader = new Prime1FileHeader();
 		this.fileName = fileName;
+		this.worldPaks = new ArrayList<PakFile>();
+		FileUtilities.setFileName(fileName);
 		this.gameHeader = this.readDiscHeader();
 		this.prime1Files = this.readFileSystemTable(this.gameHeader);
 	}
@@ -48,30 +53,35 @@ public class Prime1Reader extends GamecubeDiscImageReader {
 	
 	public Prime1FileHeader readDiscHeader() {
 		Prime1FileHeader gameHeader = new Prime1FileHeader();
-		gameHeader.gameId = new String(this.readGameDiscData(this.GAMEID_OFFSET, 6));
-		gameHeader.version = this.readGameDiscData(this.GAME_VERSION_OFFSET, 1)[0];
-		gameHeader.fstOffset = ByteBuffer.wrap(this.readGameDiscData(this.FST_OFFSET_OFFSET, 4)).getInt();
-		gameHeader.fstSize = ByteBuffer.wrap(this.readGameDiscData(this.FST_SIZE_OFFSET, 4)).getInt();
-		gameHeader.fstMaxSize = ByteBuffer.wrap(this.readGameDiscData(this.FST_MAXSIZE_OFFSET, 4)).getInt();
+		gameHeader.gameId = new String(FileUtilities.readGameDiscData(this.GAMEID_OFFSET, 6));
+		gameHeader.version = FileUtilities.readGameDiscData(this.GAME_VERSION_OFFSET, 1)[0];
+		gameHeader.fstOffset = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_OFFSET_OFFSET, 4)).getInt();
+		gameHeader.fstSize = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_SIZE_OFFSET, 4)).getInt();
+		gameHeader.fstMaxSize = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_MAXSIZE_OFFSET, 4)).getInt();
 		return gameHeader;
 	}
 	
 	public Prime1File[] readFileSystemTable(Prime1FileHeader gameHeader) {
-		int numEntries = ByteBuffer.wrap(this.readGameDiscData(gameHeader.fstOffset + 8, 4)).getInt();
+		int numEntries = ByteBuffer.wrap(FileUtilities.readGameDiscData(gameHeader.fstOffset + 8, 4)).getInt();
 		Prime1File[] prime1Files = new Prime1File[numEntries];
 		int stringTableOffset = gameHeader.fstOffset + (numEntries * 12);
 		System.out.println("String table offset: " + stringTableOffset);
 		for (int i = 1; i < numEntries; i++) {
 			prime1Files[i-1] = new Prime1File();
-			int fileFlag = this.readGameDiscData(this.gameHeader.fstOffset + (i * 12), 1)[0];
+			int fileFlag = FileUtilities.readGameDiscData(this.gameHeader.fstOffset + (i * 12), 1)[0];
 			prime1Files[i-1].isDirectory = fileFlag == 1 ? true : false;
 			
-			byte[] fileNameOffsetBytes = this.readGameDiscData(this.gameHeader.fstOffset + 1 + (i * 12),  3);
+			byte[] fileNameOffsetBytes = FileUtilities.readGameDiscData(this.gameHeader.fstOffset + 1 + (i * 12),  3);
 			prime1Files[i-1].fileName = new String(this.readFileName(stringTableOffset + this.convertOddByteArrToInt(fileNameOffsetBytes)));
 			
-			prime1Files[i-1].fileOffset = ByteBuffer.wrap(this.readGameDiscData(this.gameHeader.fstOffset + 4 + (i * 12), 4)).getInt();
-			prime1Files[i-1].multiIntVal = ByteBuffer.wrap(this.readGameDiscData(this.gameHeader.fstOffset + 8 + (i * 12), 4)).getInt();
-			System.out.println(prime1Files[i-1].fileName + " - isDirectory: " + prime1Files[i-1].isDirectory + ", fileOffset: " + prime1Files[i-1].fileOffset + ", multiIntVal: " + prime1Files[i-1].multiIntVal);
+			prime1Files[i-1].fileOffset = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.gameHeader.fstOffset + 4 + (i * 12), 4)).getInt();
+			prime1Files[i-1].multiIntVal = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.gameHeader.fstOffset + 8 + (i * 12), 4)).getInt();
+//			System.out.println(prime1Files[i-1].fileName + " - isDirectory: " + prime1Files[i-1].isDirectory + ", fileOffset: " + Integer.toHexString(prime1Files[i-1].fileOffset) + ", multiIntVal: " + prime1Files[i-1].multiIntVal);
+			
+			if (prime1Files[i-1].fileName.matches("Metroid[1-8].pak")) {
+				System.out.println("World pak found");
+				this.worldPaks.add(new PakFile(prime1Files[i-1].fileName, prime1Files[i-1].fileOffset));
+			}
 		}
 		return prime1Files;
 	}

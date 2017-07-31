@@ -56,10 +56,11 @@ public class App
     		randomizer.runRandomizer();
     	}
     	
-    	if (cla.getInputFile() != null) {
-    		System.out.println("Reading input file " + cla.getInputFile());
-    		Prime1Reader p1r = new Prime1Reader(cla.getInputFile());
-    	}
+//    	if (cla.getInputFile() != null) {
+//    		Prime1Reader p1r = new Prime1Reader(cla.getInputFile());
+//    	}
+    	
+    	Prime1Reader p1r = new Prime1Reader("mp1.iso");
     	
     }
     
