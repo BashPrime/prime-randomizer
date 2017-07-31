@@ -1,4 +1,7 @@
 # prime-randomizer
+
+[![Build Status](https://travis-ci.org/etaylor8086/prime-randomizer.svg?branch=master)](https://travis-ci.org/etaylor8086/prime-randomizer)
+
 This project currently randomizes Metroid Prime (support for Metroid Prime 2: Echoes to be added later) and is incomplete/a work-in-progress.
 
 Right now, the randomizer currently generates a list of randomized locations and prints it to the console, although it does support both using a random seed as well as the user specifying their seed of choice.
