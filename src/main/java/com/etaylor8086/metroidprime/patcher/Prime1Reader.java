@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.etaylor8086.metroidprime.disc.GamecubeDiscHeader;
 import com.etaylor8086.metroidprime.util.FileUtilities;
 
 public class Prime1Reader extends GamecubeDiscImageReader {
