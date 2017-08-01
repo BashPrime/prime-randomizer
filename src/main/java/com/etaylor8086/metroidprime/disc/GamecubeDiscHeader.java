@@ -1,6 +1,9 @@
 package com.etaylor8086.metroidprime.disc;
 
-public class GamecubeDiscHeader {
+import com.etaylor8086.metroidprime.io.BinarySerializable;
+import com.etaylor8086.metroidprime.io.GamecubeDiscIO;
+
+public class GamecubeDiscHeader extends BinarySerializable {
 	private int magicNumber = 0xC2339F3D;
 	public int gameCode = -1;
 	public short makerCode = -1;
@@ -19,4 +22,32 @@ public class GamecubeDiscHeader {
 	public int userPos = -1;
 	public int userLen = -1;
 	public int unknown = -1;
+	
+	public void read(GamecubeDiscIO gcio) {
+		this.gameCode = gcio.readInt();
+		this.makerCode = gcio.readShort();
+		this.discID = gcio.readByte();
+		this.version = gcio.readByte();
+		this.audioStreaming = gcio.readByte();
+		this.streamBufferSize = gcio.readByte();
+		// Read unused zeroes 0x12 long
+		this.magicNumber = gcio.readInt();
+		// Read gamename as string
+		// Seek to 0x400
+		this.debugMonitorAddr = gcio.readInt();
+		this.debugMonitorOffset = gcio.readInt();
+		// Read unused zeroes 0x18 long
+		this.bootDolOffset = gcio.readInt();
+		this.fstOffset = gcio.readInt();
+		this.fstSize = gcio.readInt();
+		this.fstMaxSize = gcio.readInt();
+		this.userPos = gcio.readInt();
+		this.userLen = gcio.readInt();
+		this.unknown = gcio.readInt();
+		// Read unused zeroes 0x04 long
+	}
+	
+	public void write(GamecubeDiscIO gcio) {
+		// Write class members to gcio here
+	}
 }

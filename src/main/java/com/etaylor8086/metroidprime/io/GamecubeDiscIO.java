@@ -51,4 +51,13 @@ public class GamecubeDiscIO {
 		
 		return inData;
 	}
+	
+	public <T extends BinarySerializable> T read(T i) {
+		i.read(this);
+		return i;
+	}
+	
+	public <T extends BinarySerializable> void write(T i) {
+		i.write(this);
+	}
 }
