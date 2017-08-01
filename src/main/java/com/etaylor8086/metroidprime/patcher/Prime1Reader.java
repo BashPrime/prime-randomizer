@@ -8,12 +8,12 @@ import com.etaylor8086.metroidprime.util.FileUtilities;
 
 public class Prime1Reader extends GamecubeDiscImageReader {
 	String fileName;
-	Prime1FileHeader gameHeader;
+	GamecubeDiscHeader gameHeader;
 	Prime1File[] prime1Files;
 	List<PakFile> worldPaks;
 	
 	public Prime1Reader(String fileName) {
-		this.gameHeader = new Prime1FileHeader();
+		this.gameHeader = new GamecubeDiscHeader();
 		this.fileName = fileName;
 		this.worldPaks = new ArrayList<PakFile>();
 		FileUtilities.setFileName(fileName);
@@ -23,17 +23,17 @@ public class Prime1Reader extends GamecubeDiscImageReader {
 	
 	
 	
-	public Prime1FileHeader readDiscHeader() {
-		Prime1FileHeader gameHeader = new Prime1FileHeader();
-		gameHeader.gameId = new String(FileUtilities.readGameDiscData(this.GAMEID_OFFSET, 6));
-		gameHeader.version = FileUtilities.readGameDiscData(this.GAME_VERSION_OFFSET, 1)[0];
-		gameHeader.fstOffset = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_OFFSET_OFFSET, 4)).getInt();
-		gameHeader.fstSize = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_SIZE_OFFSET, 4)).getInt();
-		gameHeader.fstMaxSize = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_MAXSIZE_OFFSET, 4)).getInt();
+	public GamecubeDiscHeader readDiscHeader() {
+		GamecubeDiscHeader gameHeader = new GamecubeDiscHeader();
+//		gameHeader.gameId = new String(FileUtilities.readGameDiscData(this.GAMEID_OFFSET, 6));
+//		gameHeader.version = FileUtilities.readGameDiscData(this.GAME_VERSION_OFFSET, 1)[0];
+//		gameHeader.fstOffset = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_OFFSET_OFFSET, 4)).getInt();
+//		gameHeader.fstSize = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_SIZE_OFFSET, 4)).getInt();
+//		gameHeader.fstMaxSize = ByteBuffer.wrap(FileUtilities.readGameDiscData(this.FST_MAXSIZE_OFFSET, 4)).getInt();
 		return gameHeader;
 	}
 	
-	public Prime1File[] readFileSystemTable(Prime1FileHeader gameHeader) {
+	public Prime1File[] readFileSystemTable(GamecubeDiscHeader gameHeader) {
 		int numEntries = ByteBuffer.wrap(FileUtilities.readGameDiscData(gameHeader.fstOffset + 8, 4)).getInt();
 		Prime1File[] prime1Files = new Prime1File[numEntries];
 		int stringTableOffset = gameHeader.fstOffset + (numEntries * 12);
