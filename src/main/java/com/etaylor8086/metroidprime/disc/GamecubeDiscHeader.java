@@ -30,13 +30,13 @@ public class GamecubeDiscHeader extends BinarySerializable {
 		this.version = gcio.readByte();
 		this.audioStreaming = gcio.readByte();
 		this.streamBufferSize = gcio.readByte();
-		// Read unused zeroes 0x12 long
+		gcio.readBytes(0x12); // Read unused zeroes 0x12 long
 		this.magicNumber = gcio.readInt();
-		// Read gamename as string
+		this.gameName = gcio.readString();
 		// Seek to 0x400
 		this.debugMonitorAddr = gcio.readInt();
 		this.debugMonitorOffset = gcio.readInt();
-		// Read unused zeroes 0x18 long
+		gcio.readBytes(0x18); // Read unused zeroes 0x18 long
 		this.bootDolOffset = gcio.readInt();
 		this.fstOffset = gcio.readInt();
 		this.fstSize = gcio.readInt();
@@ -44,7 +44,7 @@ public class GamecubeDiscHeader extends BinarySerializable {
 		this.userPos = gcio.readInt();
 		this.userLen = gcio.readInt();
 		this.unknown = gcio.readInt();
-		// Read unused zeroes 0x04 long
+		gcio.readBytes(0x04); // Read unused zeroes 0x04 long
 	}
 	
 	public void write(GamecubeDiscIO gcio) {

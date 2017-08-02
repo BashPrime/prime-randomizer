@@ -2,6 +2,8 @@ package com.etaylor8086.metroidprime.io;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 public class GamecubeDiscIO {
 	private long pos = 0;
@@ -26,6 +28,16 @@ public class GamecubeDiscIO {
 		return inData;
 	}
 	
+	public void writeByte(Byte outData) {
+		this.pos += Byte.BYTES;
+		try {
+			this.outFile.writeByte(outData);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
 	public Short readShort() {
 		this.pos += Short.BYTES;
 		Short inData = null;
@@ -39,6 +51,16 @@ public class GamecubeDiscIO {
 		return inData;
 	}
 	
+	public void writeShort(Short outData) {
+		this.pos += Short.BYTES;
+		try {
+			this.outFile.writeShort(outData);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
 	public Integer readInt() {
 		this.pos += Integer.BYTES;
 		Integer inData = null;
@@ -50,6 +72,60 @@ public class GamecubeDiscIO {
 		}
 		
 		return inData;
+	}
+	
+	public void writeInt(Integer outData) {
+		this.pos += Integer.BYTES;
+		try {
+			this.outFile.writeInt(outData);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
+	public byte[] readBytes(int numBytes) {
+		byte[] bytes = new byte[numBytes];
+		this.pos += numBytes;
+		try {
+			this.inFile.readFully(bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return bytes;
+	}
+	
+	public void writeBytes(byte[] bytes) {
+		this.pos += bytes.length;
+		try {
+			this.outFile.write(bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String readString() {
+		String res = null;
+		byte[] buffer = new byte[512];
+		int size = 0;
+		try {
+			for (int i = 0; i < buffer.length; i++) {
+				byte readByte = this.readByte();
+				if (readByte == 0)
+					res = new String(buffer, 0, size, "UTF-8");
+				else {
+					buffer[i] = readByte;
+					size++;
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
 	}
 	
 	public <T extends BinarySerializable> T read(T i) {
