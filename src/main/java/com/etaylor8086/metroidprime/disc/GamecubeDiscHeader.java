@@ -34,6 +34,7 @@ public class GamecubeDiscHeader extends BinarySerializable {
 		this.magicNumber = gcio.readInt();
 		this.gameName = gcio.readString();
 		// Seek to 0x400
+		gcio.readPaddingTo(0x400);
 		this.debugMonitorAddr = gcio.readInt();
 		this.debugMonitorOffset = gcio.readInt();
 		gcio.readBytes(0x18); // Read unused zeroes 0x18 long

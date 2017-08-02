@@ -128,6 +128,14 @@ public class GamecubeDiscIO {
 		return res;
 	}
 	
+	public void readPaddingTo(long endPos) {
+		if (endPos > this.pos) {
+			long numBytes = endPos - this.pos;
+			for (long i = 0; i < numBytes; i++)
+				this.readByte();
+		}
+	}
+	
 	public <T extends BinarySerializable> T read(T i) {
 		i.read(this);
 		return i;
