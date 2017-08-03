@@ -62,18 +62,7 @@ public class App
     	
 	   	if (cla.getInputFile() != null) {
 	   		Prime1Reader p1r = new Prime1Reader(cla.getInputFile());
-	   	}
-	   	
-	   	GamecubeDiscHeader header = new GamecubeDiscHeader();
-	   	try {
-	   		RandomAccessFile srcRaf = new RandomAccessFile("mp1.iso", "r");
-	   		new GamecubeDiscIO(srcRaf, null).read(header);
-	   		String gameID = DataTypeConversion.convertIntAsciiToStr(header.gameCode) + DataTypeConversion.convertIntAsciiToStr(header.makerCode);
-	   		System.out.println(gameID);
-	   	} catch (Exception e) {
-	   		e.printStackTrace();
-	   	}
-	   	
+	   	}	   	
     }
     
     /**
