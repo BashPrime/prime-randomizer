@@ -4,8 +4,12 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.beust.jcommander.JCommander;
+import com.etaylor8086.metroidprime.disc.GamecubeDiscHeader;
+import com.etaylor8086.metroidprime.io.GamecubeDiscIO;
 import com.etaylor8086.metroidprime.patcher.Prime1Reader;
 import com.etaylor8086.metroidprime.randomizer.Randomizer;
+import com.etaylor8086.metroidprime.util.DataTypeConversion;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.RandomAccessFile;
@@ -59,6 +63,17 @@ public class App
 	   	if (cla.getInputFile() != null) {
 	   		Prime1Reader p1r = new Prime1Reader(cla.getInputFile());
 	   	}
+	   	
+	   	GamecubeDiscHeader header = new GamecubeDiscHeader();
+	   	try {
+	   		RandomAccessFile srcRaf = new RandomAccessFile("mp1.iso", "r");
+	   		new GamecubeDiscIO(srcRaf, null).read(header);
+	   		String gameID = DataTypeConversion.convertIntAsciiToStr(header.gameCode) + DataTypeConversion.convertIntAsciiToStr(header.makerCode);
+	   		System.out.println(gameID);
+	   	} catch (Exception e) {
+	   		e.printStackTrace();
+	   	}
+	   	
     }
     
     /**
