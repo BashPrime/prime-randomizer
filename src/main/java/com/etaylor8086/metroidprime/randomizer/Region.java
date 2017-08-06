@@ -5,4 +5,19 @@ import java.util.Map;
 public abstract class Region {
 	protected String name;
 	protected Map<String, Location> locations;
+	
+	public void init() {
+		this.init("normal");
+	}
+	
+	public void init(String difficulty) {
+		switch (difficulty) {
+			case "normal":
+			default: {
+				this.initNormal();
+			}
+		}
+	}
+	
+	public abstract void initNormal();
 }
