@@ -127,6 +127,7 @@ public class TallonOverworld extends Region {
 				{ Item.get("morph") },
 				{ Item.get("bomb") },
 				{ Item.get("spacejump") },
+				{ Item.get("waveBeam") },
 				{ Item.get("iceBeam") },
 				{ Item.get("xray") }
 			}

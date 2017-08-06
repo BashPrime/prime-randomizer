@@ -48,21 +48,21 @@ public class App
     		System.out.println("randomizer version " + properties.getProperty("randomizer.version"));
     	}
     	
-    	// Run randomizer using provided seed value
-    	else if (cla.getSeed() != null) {
-    		Randomizer randomizer = new Randomizer(cla.getSeed());
-    		randomizer.runRandomizer();
-    	}
-    	
-    	// Run randomizer with random seed
-    	else {
-    		Randomizer randomizer = new Randomizer();
-    		randomizer.runRandomizer();
-    	}
-    	
-	   	if (cla.getInputFile() != null) {
-	   		Prime1Reader p1r = new Prime1Reader(cla.getInputFile());
-	   	}	   	
+//    	// Run randomizer using provided seed value
+//    	else if (cla.getSeed() != null) {
+//    		Randomizer randomizer = new Randomizer(cla.getSeed());
+//    		randomizer.runRandomizer();
+//    	}
+//    	
+//    	// Run randomizer with random seed
+//    	else {
+//    		Randomizer randomizer = new Randomizer();
+//    		randomizer.runRandomizer();
+//    	}
+//    	
+//	   	if (cla.getInputFile() != null) {
+//	   		Prime1Reader p1r = new Prime1Reader(cla.getInputFile());
+//	   	}	   	
     }
     
     /**
