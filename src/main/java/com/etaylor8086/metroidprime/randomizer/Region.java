@@ -1,6 +1,8 @@
 package com.etaylor8086.metroidprime.randomizer;
 
-public class Region {
+import java.util.Map;
+
+public abstract class Region {
 	protected String name;
-	protected Location[] locations;
+	protected Map<String, Location> locations;
 }
