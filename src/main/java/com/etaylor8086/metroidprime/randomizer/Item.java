@@ -27,6 +27,13 @@ public class Item {
 		this.xraySkin = xraySkin;
 	}
 	
+	public static Item get(String key) {
+		Map<String, Item> items = all();
+		if(items.containsKey(key))
+			return items.get(key);
+		return null;
+	}
+	
 	public static Map<String, Item> all() {
 		if (items != null)
 			return items;
