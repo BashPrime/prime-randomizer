@@ -51,7 +51,7 @@ public class Item {
 		items.put("pb", new Item("pb", "Power Bomb", 0x07, 0xd532bdb8, 0xf19131ad, null, null, null, null));
 		items.put("charge", new Item("charge", "Charge Beam", 0x0a, 0xc5472401, 0xe3cbc3f3, null, null, null, null));
 		items.put("superMissile", new Item("superMissile", "Super Missile", 0x0b, 0x853a56f0, 0x7c04e388, 0, null, null, null));
-		items.put("waveBuster", new Item("waveBuster", "Wavebuster", 0x1c, 0x74a39f36, 0x7c04e388, 2, null, null, null));
+		items.put("wavebuster", new Item("waveBuster", "Wavebuster", 0x1c, 0x74a39f36, 0x7c04e388, 2, null, null, null));
 		items.put("iceSpreader", new Item("iceSpreader", "Ice Spreader", 0x0e, 0x85ba7acb, 0x7c04e388, 3, null, null, null));
 		items.put("flamethrower", new Item("flamethrower", "Flamethrower", 0x08, 0xc54bbf68, 0x7c04e388, 1, null, null, null));
 		items.put("thermal", new Item("thermal", "Thermal Visor", 0x09, 0x61dab956, 0x9f0c908a, null, null, null, null));
