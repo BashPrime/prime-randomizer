@@ -78,4 +78,12 @@ public class Item {
 		
 		return items;
 	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public String getFullName() {
+		return this.fullName;
+	}
 }

@@ -26,4 +26,16 @@ public class Location {
 	public String getName() {
 		return this.name;
 	}
+	
+	public boolean hasItem() {
+		return this.item != null;
+	}
+	
+	public Item getItem() {
+		return this.item;
+	}
+	
+	public void setItem(Item item) {
+		this.item = item;
+	}
 }
