@@ -1,5 +1,9 @@
 package com.etaylor8086.metroidprime.randomizer;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Location {
 	protected String name;
 	protected String fileName;
@@ -37,5 +41,20 @@ public class Location {
 	
 	public void setItem(Item item) {
 		this.item = item;
+	}
+	
+	public boolean canFill(Item item, List<Item> items) {
+		boolean canFill = true;
+		for(int i = 0; i < this.required.length; i++) {
+			if (Collections.disjoint(items, Arrays.asList(this.required[i]))) {
+				canFill = false;
+				break;
+			}
+		}
+		return canFill;
+	}
+	
+	public boolean canLeave(Item item, List<Item> items) {
+		return true;
 	}
 }

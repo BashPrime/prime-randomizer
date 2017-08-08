@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.etaylor8086.metroidprime.randomizer.fillers.RandomAssumed;
+import com.etaylor8086.metroidprime.randomizer.filler.RandomAssumed;
 
 public class Randomizer {
 	protected String difficulty;

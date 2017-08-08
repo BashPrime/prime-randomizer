@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.etaylor8086.metroidprime.randomizer.item.Artifact;
 import com.etaylor8086.metroidprime.randomizer.regions.MagmoorCaverns;
 import com.etaylor8086.metroidprime.randomizer.regions.TallonOverworld;
 
@@ -12,6 +13,7 @@ public class World {
 	protected String difficulty;
 	protected List<Region> regions;
 	protected List<Location> locations;
+	protected List<Location> collectableLocations;
 	
 	public World(String difficulty) {
 		this.difficulty = difficulty;
@@ -37,5 +39,29 @@ public class World {
 	
 	public List<Location> getLocations() {
 		return this.locations;
+	}
+	
+	public List<Location> getCollectableLocations() {
+		if (this.collectableLocations == null) {
+			this.collectableLocations = new ArrayList<Location>();
+			for(Location location : this.locations) {
+				if (location.hasItem() && !(location.getItem() instanceof Artifact))
+					collectableLocations.add(location);
+			}
+		}
+		
+		return this.collectableLocations;
+	}
+	
+	public List<Item> collectItems(List<Item> collected) {
+		List<Item> myItems = (collected != null) ? collected : new ArrayList<Item>();
+		List<Location> availableLocations = this.getCollectableLocations();
+		List<Item> newItems;
+		
+//		do {
+//			
+//		} while(newItems.size() > 0);
+		
+		return myItems;
 	}
 }

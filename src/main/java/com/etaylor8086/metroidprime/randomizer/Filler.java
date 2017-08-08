@@ -1,5 +1,6 @@
 package com.etaylor8086.metroidprime.randomizer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -26,18 +27,14 @@ public abstract class Filler {
 			System.out.println("Placing " + item.getFullName() + " in " + location.getName());
 			location.setItem(item);
 		}
-		
-		
-//		foreach($locations as $location) {
-//			if ($location->hasItem()) {
-//				continue;
-//			}
-//			$item = array_pop($fill_items);
-//			if (!$item) {
-//				break;
-//			}
-//			Log::debug(sprintf('Placing: %s in %s', $item->getNiceName(), $location->getName()));
-//			$location->setItem($item);
-//		}
+	}
+	
+	protected List<Location> getEmptyLocations(List<Location> locations) {
+		List<Location> emptyLocations = new ArrayList<Location>();
+		for(Location location : locations) {
+			if (location.getItem() == null)
+				emptyLocations.add(location);
+		}
+		return emptyLocations;
 	}
 }
