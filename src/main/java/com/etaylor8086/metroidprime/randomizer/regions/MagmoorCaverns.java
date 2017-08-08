@@ -39,7 +39,8 @@ public class MagmoorCaverns extends Region {
 				ItemRequirement.MISSILES,
 				ItemRequirement.ANY_SUIT,
 				{ Item.get("morph") },
-				{ Item.get("spacejump"), Item.get("xray") }
+				{ Item.get("spacejump") },
+				{ Item.get("xray") }
 			}
 		);
 		

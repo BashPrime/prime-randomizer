@@ -1,13 +1,16 @@
 package com.etaylor8086.metroidprime.randomizer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import com.etaylor8086.metroidprime.randomizer.fillers.RandomAssumed;
 
 public class Randomizer {
 	protected String difficulty;
 	protected World world;
-	protected Integer seed;
 	protected Random rng;
 	
 	/**
@@ -15,21 +18,28 @@ public class Randomizer {
 	 */
 	public Randomizer() {
 		this.difficulty = "normal";
-		this.seed = this.getRandomSeed();
-		this.rng = new Random(this.seed);
+		this.world = new World(this.difficulty);
 	}
 	
 	/**
-	 * Overloaded constructor to load class with user-defined seed
-	 * @param seed
+	 * Overloaded constructor to load class with user-defined difficulty
+	 * @param difficulty
 	 */
-	public Randomizer(Integer seed) {
-		this.seed = seed % 1000000000;
-		this.rng = new Random(this.seed);
+	public Randomizer(String difficulty) {
+		this.difficulty = difficulty;
+		this.world = new World(difficulty);
 	}
 	
 	public void randomize() {
+		this.rng = new Random();
+		int seed = this.getRandomInt(1, 999999999);
+		this.randomize(seed);
+	}
+	
+	public void randomize(int seed) {
+		this.rng = new Random(seed);
 		
+		new RandomAssumed(this.world, this.rng).fill(this.getArtifacts(), this.getPriorityItems(), this.getLuxuryItems(), this.getExpansions());
 	}
 	
 //	public void writeSpoilerLog(RandomItemLocation[] locations) {
@@ -56,65 +66,87 @@ public class Randomizer {
 //		}
 //	}
 	
-	public Map<String, Integer> getPriorityItems() {
-		Map<String, Integer> priorityItems = new HashMap<String, Integer>();
-		priorityItems.put("missileLauncher", 1);
-		priorityItems.put("morph", 1);
-		priorityItems.put("bomb", 1);
-		priorityItems.put("phazon", 1);
-		priorityItems.put("spacejump", 1);
-		priorityItems.put("waveBeam", 1);
-		priorityItems.put("iceBeam", 1);
-		priorityItems.put("plasmaBeam", 1);
-		priorityItems.put("charge", 1);
-		priorityItems.put("superMissile", 1);
-		priorityItems.put("xray", 1);
-		priorityItems.put("pb", 1);
+	public List<Item> getArtifacts() {
+		List<Item> artifacts = new ArrayList<Item>();
+		Map<String, Integer> artifactsMap = new HashMap<String, Integer>();
+		artifactsMap.put("truth", 1);
+		artifactsMap.put("strength", 1);
+		artifactsMap.put("elder", 1);
+		artifactsMap.put("wild", 1);
+		artifactsMap.put("lifegiver", 1);
+		artifactsMap.put("warrior", 1);
+		artifactsMap.put("chozo", 1);
+		artifactsMap.put("nature", 1);
+		artifactsMap.put("sun", 1);
+		artifactsMap.put("world", 1);
+		artifactsMap.put("spirit", 1);
+		artifactsMap.put("newborn", 1);
 		
-		// Artifacts
-		priorityItems.put("truth", 1);
-		priorityItems.put("strength", 1);
-		priorityItems.put("elder", 1);
-		priorityItems.put("wild", 1);
-		priorityItems.put("lifegiver", 1);
-		priorityItems.put("warrior", 1);
-		priorityItems.put("chozo", 1);
-		priorityItems.put("nature", 1);
-		priorityItems.put("sun", 1);
-		priorityItems.put("world", 1);
-		priorityItems.put("spirit", 1);
-		priorityItems.put("newborn", 1);
+		for(Map.Entry<String, Integer> entry : artifactsMap.entrySet())
+			for (int i = 0; i < entry.getValue(); i++)
+				artifacts.add(Item.get(entry.getKey()));
+				
+		return artifacts;
+	}
+	
+	public List<Item> getPriorityItems() {
+		List<Item> priorityItems = new ArrayList<Item>();
+		Map<String, Integer> priorityItemsMap = new HashMap<String, Integer>();
+		priorityItemsMap.put("missileLauncher", 1);
+		priorityItemsMap.put("morph", 1);
+		priorityItemsMap.put("bomb", 1);
+		priorityItemsMap.put("phazon", 1);
+		priorityItemsMap.put("spacejump", 1);
+		priorityItemsMap.put("waveBeam", 1);
+		priorityItemsMap.put("iceBeam", 1);
+		priorityItemsMap.put("plasmaBeam", 1);
+		priorityItemsMap.put("charge", 1);
+		priorityItemsMap.put("superMissile", 1);
+		priorityItemsMap.put("xray", 1);
+		priorityItemsMap.put("pb", 1);
+		
+		for(Map.Entry<String, Integer> entry : priorityItemsMap.entrySet())
+			for (int i = 0; i < entry.getValue(); i++)
+				priorityItems.add(Item.get(entry.getKey()));
+				
 		return priorityItems;
 	}
 	
-	public Map<String, Integer> getLuxuryItems() {
-		Map<String, Integer> luxuryItems = new HashMap<String, Integer>();
-		luxuryItems.put("varia", 1);
-		luxuryItems.put("gravity", 1);
-		luxuryItems.put("thermal", 1);
-		luxuryItems.put("boost", 1);
-		luxuryItems.put("spider", 1);
-		luxuryItems.put("grapple", 1);
-		luxuryItems.put("wavebuster", 1);
-		luxuryItems.put("iceSpreader", 1);
-		luxuryItems.put("flamethrower", 1);
+	public List<Item> getLuxuryItems() {
+		List<Item> luxuryItems = new ArrayList<Item>();
+		Map<String, Integer> luxuryItemsMap = new HashMap<String, Integer>();
+		luxuryItemsMap.put("varia", 1);
+		luxuryItemsMap.put("gravity", 1);
+		luxuryItemsMap.put("thermal", 1);
+		luxuryItemsMap.put("boost", 1);
+		luxuryItemsMap.put("spider", 1);
+		luxuryItemsMap.put("grapple", 1);
+		luxuryItemsMap.put("wavebuster", 1);
+		luxuryItemsMap.put("iceSpreader", 1);
+		luxuryItemsMap.put("flamethrower", 1);
+		
+		for(Map.Entry<String, Integer> entry : luxuryItemsMap.entrySet())
+			for (int i = 0; i < entry.getValue(); i++)
+				luxuryItems.add(Item.get(entry.getKey()));
+		
 		return luxuryItems;
 	}
 	
-	public Map<String, Integer> getExpansions() {
-		Map<String, Integer> expansions = new HashMap<String, Integer>();
-		expansions.put("missileExpansion", 49);
-		expansions.put("eTank", 14);
-		expansions.put("pbExpansion", 4);
+	public List<Item> getExpansions() {
+		List<Item> expansions = new ArrayList<Item>();
+		Map<String, Integer> expansionsMap = new HashMap<String, Integer>();
+		expansionsMap.put("missileExpansion", 49);
+		expansionsMap.put("eTank", 14);
+		expansionsMap.put("pbExpansion", 4);
+		
+		for(Map.Entry<String, Integer> entry : expansionsMap.entrySet())
+			for (int i = 0; i < entry.getValue(); i++)
+				expansions.add(Item.get(entry.getKey()));
+		
 		return expansions;
 	}
 	
-	public int getRandomSeed() {
-		int seedNum = new Random().nextInt((999999999 - 1) + 1) + 1;
-		return seedNum;
-	}
-	
-	public int randomInt(int min, int max) {
+	public int getRandomInt(int min, int max) {
 		return this.rng.nextInt((max - min) + 1) + min;
 	}
 }

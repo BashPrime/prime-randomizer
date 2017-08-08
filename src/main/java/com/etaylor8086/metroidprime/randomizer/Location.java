@@ -22,4 +22,8 @@ public class Location {
 	public void setEscape(Item[][] escape) {
 		this.escape = escape;
 	}
+	
+	public String getName() {
+		return this.name;
+	}
 }
