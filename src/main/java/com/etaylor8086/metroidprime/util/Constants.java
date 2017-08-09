@@ -1,0 +1,40 @@
+package com.etaylor8086.metroidprime.util;
+
+public class Constants {
+	public static final String MISSILE_EXPANSION = "missileExpansion";
+	public static final String ENERGY_TANK = "eTank";
+	public static final String POWER_BOMB_EXPANSION = "pbExpansion";
+	public static final String SPACE_JUMP_BOOTS = "spaceJump";
+	public static final String MISSILE_LAUNCHER = "missileLauncher";
+	public static final String WAVE_BEAM = "waveBeam";
+	public static final String ICE_BEAM = "iceBeam";
+	public static final String PLASMA_BEAM = "plasmaBeam";
+	public static final String CHARGE_BEAM = "charge";
+	public static final String SUPER_MISSILE = "superMissile";
+	public static final String WAVEBUSTER = "wavebuster";
+	public static final String ICE_SPREADER = "iceSpreader";
+	public static final String FLAMETHROWER = "flamethrower";
+	public static final String GRAPPLE_BEAM = "grapple";
+	public static final String MORPH_BALL = "morph";
+	public static final String BOOST_BALL = "boost";
+	public static final String SPIDER_BALL = "spider";
+	public static final String MORPH_BALL_BOMB = "bomb";
+	public static final String POWER_BOMB = "pb";
+	public static final String VARIA_SUIT = "varia";
+	public static final String GRAVITY_SUIT = "gravity";
+	public static final String PHAZON_SUIT = "phazon";
+	public static final String THERMAL_VISOR = "thermal";
+	public static final String XRAY_VISOR = "xray";
+	public static final String ARTIFACT_OF_TRUTH = "truth";
+	public static final String ARTIFACT_OF_STRENGTH = "strength";
+	public static final String ARTIFACT_OF_ELDER = "elder";
+	public static final String ARTIFACT_OF_WILD = "wild";
+	public static final String ARTIFACT_OF_LIFEGIVER = "lifegiver";
+	public static final String ARTIFACT_OF_WARRIOR = "warrior";
+	public static final String ARTIFACT_OF_CHOZO = "chozo";
+	public static final String ARTIFACT_OF_NATURE = "nature";
+	public static final String ARTIFACT_OF_SUN = "sun";
+	public static final String ARTIFACT_OF_WORLD = "world";
+	public static final String ARTIFACT_OF_SPIRIT = "spirit";
+	public static final String ARTIFACT_OF_NEWBORN = "newborn";
+}
