@@ -23,5 +23,9 @@ public abstract class Region {
 		}
 	}
 	
+	public Location getLocation(String key) {
+		return this.locations.get(key);
+	}
+	
 	public abstract void initNormal();
 }
