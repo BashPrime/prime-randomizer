@@ -90,4 +90,79 @@ public class Item {
 	public String getFullName() {
 		return this.fullName;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((animCharacter == null) ? 0 : animCharacter.hashCode());
+		result = prime * result + ((animSet == null) ? 0 : animSet.hashCode());
+		result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((model == null) ? 0 : model.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((rotation == null) ? 0 : rotation.hashCode());
+		result = prime * result + ((xrayModel == null) ? 0 : xrayModel.hashCode());
+		result = prime * result + ((xraySkin == null) ? 0 : xraySkin.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (animCharacter == null) {
+			if (other.animCharacter != null)
+				return false;
+		} else if (!animCharacter.equals(other.animCharacter))
+			return false;
+		if (animSet == null) {
+			if (other.animSet != null)
+				return false;
+		} else if (!animSet.equals(other.animSet))
+			return false;
+		if (fullName == null) {
+			if (other.fullName != null)
+				return false;
+		} else if (!fullName.equals(other.fullName))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (model == null) {
+			if (other.model != null)
+				return false;
+		} else if (!model.equals(other.model))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (rotation == null) {
+			if (other.rotation != null)
+				return false;
+		} else if (!rotation.equals(other.rotation))
+			return false;
+		if (xrayModel == null) {
+			if (other.xrayModel != null)
+				return false;
+		} else if (!xrayModel.equals(other.xrayModel))
+			return false;
+		if (xraySkin == null) {
+			if (other.xraySkin != null)
+				return false;
+		} else if (!xraySkin.equals(other.xraySkin))
+			return false;
+		return true;
+	}
+	
+	
 }
