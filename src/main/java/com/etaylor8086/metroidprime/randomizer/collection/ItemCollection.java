@@ -46,4 +46,14 @@ public class ItemCollection extends ArrayList<Item> {
 	public boolean canFireSuperMissiles() {
 		return this.hasMissiles() && this.containsAll(Arrays.asList(new Item[]{Item.get("charge"), Item.get("superMissile")}));
 	}
+	
+	public boolean hasMinesFromTallonReqs() {
+		return this.hasMissiles() && this.canLayBombs() && this.has("spaceJump") && this.has("gravity") &&
+				this.has("thermal") && this.has("waveBeam") && this.has("iceBeam");
+	}
+	
+	public boolean hasMinesFromMagmoorReqs() {
+		return this.hasMissiles() && this.canLayPowerBombs() && this.hasAnySuit() && this.has("spider") && 
+				this.has("spaceJump") && this.has("waveBeam") && this.has("iceBeam");
+	}
 }
