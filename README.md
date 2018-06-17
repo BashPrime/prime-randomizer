@@ -1,5 +1,9 @@
 # prime-randomizer
 
+# [DEPRECATED]
+
+This project has been officially deprecated. Please refer to [prime-randomizer-web](https://github.com/etaylor8086/prime-randomizer-web).
+
 [![Build Status](https://travis-ci.org/etaylor8086/prime-randomizer.svg?branch=master)](https://travis-ci.org/etaylor8086/prime-randomizer)
 
 This project currently randomizes Metroid Prime (support for Metroid Prime 2: Echoes to be added later) and is incomplete/a work-in-progress.
